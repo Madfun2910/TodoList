@@ -22,7 +22,7 @@ export type TodoListType = {
     filter: FilterValuesType
 }
 
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
@@ -143,7 +143,7 @@ function App() {
                 <Grid style={{padding: "10px"}}>
                     <AddItemForm addItem={addTodoList}/>
                 </Grid>
-                <Grid container spacing={3} style={{padding:"10px"}}>
+                <Grid container spacing={3} style={{padding: "10px"}}>
                     {
                         todoLists.map(tl => {
                             let tasksForTodoList = tasks[tl.id];
