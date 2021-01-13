@@ -36,10 +36,25 @@ type chageTaskTaskTitle = {
     todolistID: string
 
 }
-
+let initialState: TasksStateType = {
+    ["todoListID1"]: [
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "ReactJS", isDone: false},
+        {id: v1(), title: "GraphQL", isDone: true},
+        {id: v1(), title: "Rest API", isDone: false}
+    ],
+    ["todoListID2"]: [
+        {id: v1(), title: "Books", isDone: true},
+        {id: v1(), title: "Butter", isDone: true},
+        {id: v1(), title: "Onion", isDone: false},
+        {id: v1(), title: "Fish", isDone: true},
+        {id: v1(), title: "Beer", isDone: false}
+    ]
+}
 
 // Функция для управления стейтом ( todoListReducer )
-export const tasksReducer = (state: TasksStateType, action: ActionType) => {
+export const tasksReducer = (state: TasksStateType = initialState, action: ActionType) => {
     switch (action.type) {
         case 'REMOVE-TASK': {
             let copyState = {...state}
@@ -53,12 +68,18 @@ export const tasksReducer = (state: TasksStateType, action: ActionType) => {
         }
 
         case 'CHANGE-TASK-STATUS': {
-            let todolistTasks = state[action.todolistID]
-            let task = todolistTasks.find(t => t.id === action.taskID);
-            if (task) {
-                task.isDone = action.isDone;
+            const todoListTasks = state[action.todolistID]
+            return {
+                ...state, [action.todolistID]: todoListTasks.map(t => t.id === action.taskID
+                    ? {...t, isDone: action.isDone}
+                    : t)
             }
-            return {...state, [action.todolistID]: todolistTasks}
+            // let todolistTasks = state[action.todolistID]
+            // let task = todolistTasks.find(t => t.id === action.taskID);
+            // if (task) {
+            //     task.isDone = action.isDone;
+            // }
+            // return ({...state})
         }
         case 'CHANGE-TASK-TITLE': {
             let todolistTasks = state[action.todolistID]
@@ -66,7 +87,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionType) => {
             if (task) {
                 task.title = action.title;
             }
-            return {...state, [action.todolistID]: todolistTasks}
+            return ({...state})
         }
         case 'ADD-TODOLIST': {
 
@@ -79,7 +100,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionType) => {
         }
 
         default:
-            throw new Error("I don't understand this type of action")
+            return state
     }
 }
 
@@ -97,7 +118,7 @@ export const changeTaskStatusAC = (taskID: string, todolistID: string, isDone: b
     return {type: 'CHANGE-TASK-STATUS', isDone, taskID, todolistID}
 }
 
-export const chageTaskTaskTitleAC = (taskID: string, todolistID: string, title: string): chageTaskTaskTitle => {
+export const changeTaskTitleAC = (taskID: string, todolistID: string, title: string): chageTaskTaskTitle => {
     return {type: 'CHANGE-TASK-TITLE', title, taskID, todolistID}
 }
 

@@ -23,9 +23,13 @@ type ChangeFilterActionType = {
     id: string
     filter: FilterValuesType
 }
+let initialSatate: Array<TodoListType> = [
+    {id: 'todoListID1', title: "What to learn", filter: "all"},
+    {id: 'todoListID2', title: "What to buy", filter: "all"}
+]
 
 // Функция для управления стейтом ( todoListReducer )
-export const todoListReducer = (state: Array<TodoListType>, action: ActionType) => {
+export const todoListReducer = (state: Array<TodoListType>=initialSatate, action: ActionType) => {
     switch (action.type) {
         case 'REMOVE-TODOLIST':
             return state.filter(tl => tl.id !== action.id);
@@ -51,7 +55,7 @@ export const todoListReducer = (state: Array<TodoListType>, action: ActionType) 
                 return tl;
             });
         default:
-            throw new Error("I don't understand this type of action")
+            return state
     }
 }
 // Создание ActionCreator для тестов
